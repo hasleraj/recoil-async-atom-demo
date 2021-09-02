@@ -1,24 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import {
+  RecoilRoot,
+  atom,
+  useRecoilValue,
+} from 'recoil';
+import { Suspense } from 'react';
 
-function App() {
+export const titleState = atom({
+  key: 'titleState', // unique ID (with respect to other atoms/selectors)
+  default: new Promise((resolve) => {
+    console.log('this is run once on file evaluation')
+    resolve('This is an asynchronously provided title')
+  })
+});
+
+export const Title = () => {
+  const title = useRecoilValue(titleState)
+  return title
+}
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={"Loading..."}>
+      <RecoilRoot>
+        <Title/>
+      </RecoilRoot>
+    </Suspense>
   );
 }
 

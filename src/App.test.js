@@ -1,8 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render } from '@testing-library/react';
+import { Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
+import { Title } from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders the title', () => {
+  expect(() => {
+    render(
+      <Suspense fallback={"Loading..."}>
+        <RecoilRoot>
+          <Title/>
+        </RecoilRoot>
+      </Suspense>
+    );
+  }).not.toThrow();
+  
 });
